@@ -1,0 +1,10 @@
+fn print(string str) {
+
+}
+
+type Animal {
+    string name
+    int8 age
+}
+
+int8 test = 100

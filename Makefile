@@ -1,10 +1,11 @@
-CC=gcc
-CFLAGS=
-
-SOURCE_FILES = main.c
+SOURCE_FILES = main.c lexer.c
 SRC_DIR = src/
+INC_DIR = include/
 BIN_DIR = bin/
 OBJ_DIR = obj/
+
+CC=gcc
+CFLAGS=-I$(INC_DIR)
 
 REQ_DIRS = $(BIN_DIR) $(OBJ_DIR)
 OBJS = $(patsubst %.c,%.o, $(SOURCE_FILES))

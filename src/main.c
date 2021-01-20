@@ -1,6 +1,10 @@
 #include <stdio.h>
+#include "lexer.h"
 
 int main(int argc, char** argv) {
-    printf("Hello world!");
+    Lexer* lexer = lexer_create("Hello world!");
+    printf("%s -> %d", lexer->source, lexer->sourceLength);
+    lexer_delete(lexer);
+
     return 0;
 }

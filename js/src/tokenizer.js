@@ -4,7 +4,8 @@ const keywords = [
     'int8',
     'string',
     'returns',
-    'return'
+    'return',
+    'scope'
 ]
 
 function findKeywords(tokens, input, inputIndex) {
@@ -46,12 +47,38 @@ function findParens(tokens, input, inputIndex) {
     return tokens
 }
 
+const numberLiteral = /[0-9]*\.?[0-9]*/
+
+function findNumberLiteral(tokens, input, inputIndex) {
+    let literal = ''
+    for(const c of input.slice(inputIndex)) {
+        if(/[0-9]/.exec(c) || c === '.') {
+            literal += c
+        } else {
+            break
+        }
+    }
+
+    if(
+        numberLiteral.exec(literal) &&
+        !isNaN(literal)
+    ) {
+        tokens.push({
+            value: literal,
+            type: 'numberLiteral'
+        })
+    }
+
+    return tokens
+}
+
 const identifiers = /[a-zA-Z][a-zA-Z0-9_]{0,30}/
+const partialIdentifier = /[a-zA-Z0-9_]/
 
 function findIdentifiers(tokens, input, inputIndex) {
     let text = ''
     for(const c of input.slice(inputIndex)) {
-        if(/[a-zA-Z0-9_]/.exec(c)) {
+        if(partialIdentifier.exec(c)) {
             text += c
         } else {
             break
@@ -103,6 +130,15 @@ module.exports = function(input) {
             continue
         }
 
+        ////////////////////////////////////
+        // Look for numbers
+        tokens = findNumberLiteral(tokens, input, index)
+        if(prevLength !== tokens.length) {
+            // Token found, move index past
+            index += tokens[tokens.length - 1].value.length - 1
+            continue
+        }
+        
         ////////////////////////////////////
         // Look for identifiers
         tokens = findIdentifiers(tokens, input, index)

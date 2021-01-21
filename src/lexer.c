@@ -1,13 +1,28 @@
 #include "lexer.h"
 
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+Token* lexer_create_token(char* value, TokenTypes type) {
+    Token* token = calloc(1, sizeof(Token));
+    token->type = type;
+
+    long length = sizeof(char) * (strlen(value) + 1);
+    token->value = calloc(1, length);
+    memcpy(token->value, value, length);
+
+    return token;
+}
+
+void lexer_delete_token(Token* token) {
+    free(token->value);
+    free(token);
+}
 
 Lexer* lexer_create(char* source) {
     Lexer* lexer = calloc(1, sizeof(Lexer));
     
-    lexer->source = source;
+    lexer->source = source; // TODO: Remember to deallocate source
     lexer->sourceLength = strlen(lexer->source);
     lexer->index = -1;
 
@@ -52,9 +67,7 @@ Token* lexer_check_keywords(Lexer* lexer) {
         }
 
         if (isSame) {
-            Token* token = calloc(1, sizeof(Token));
-            token->value = keywords[i];
-            token->type = TOKEN_KEYWORD;
+            Token* token = lexer_create_token(keywords[i], TOKEN_KEYWORD);
             lexer->index += keysize;
             return token;
         }

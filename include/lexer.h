@@ -20,6 +20,10 @@ typedef struct {
     TokenTypes type;
 } Token;
 
+Token* lexer_create_token(char* value, TokenTypes type);
+
+void lexer_delete_token(Token* token);
+
 typedef struct {
     char* source;
     long sourceLength;

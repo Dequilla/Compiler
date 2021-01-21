@@ -4,6 +4,7 @@
 typedef enum {
     TOKEN_SCOPE,
     TOKEN_IDENTIFIER,
+    TOKEN_KEYWORD,
     TOKEN_TYPE,
     TOKEN_EQ,
     TOKEN_STRLITERAL,
@@ -26,6 +27,12 @@ typedef struct {
 } Lexer;
 
 Lexer* lexer_create(char* source);
+
+int lexer_advance(Lexer* lexer);
+
+Token* lexer_check_keywords(Lexer* lexer);
+
+Token* lexer_interpret(Lexer* lexer);
 
 void lexer_delete(Lexer* lexer);
 

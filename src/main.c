@@ -9,6 +9,7 @@ int main(int argc, char** argv) {
 
         if (token != NULL) {
             printf("Token: %s\n", token->value);
+            free(token);
         }
     }
 

@@ -9,7 +9,7 @@ int main(int argc, char** argv) {
     RFile* file = file_read_open("../scripts/test.deq");
     if (file == NULL) return -1;
 
-    printf("File content:\n%s\n\nTokens:\n", file->buffer);
+    printf(" -- File content -- \n%s\n\n -- Tokens -- \n", file->buffer);
 
     Lexer* lexer = lexer_create(file->buffer);
     
@@ -17,7 +17,7 @@ int main(int argc, char** argv) {
         Token* token = lexer_interpret(lexer);
 
         if (token != NULL) {
-            printf("Token: %s\n", token->value);
+            printf("Token: %d - %s\n", token->type, token->value);
             lexer_delete_token(token);
         }
     }

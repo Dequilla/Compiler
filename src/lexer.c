@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "strings.h"
+
 Token* lexer_create_token(char* value, TokenTypes type) {
     Token* token = calloc(1, sizeof(Token));
     token->type = type;
@@ -76,12 +78,58 @@ Token* lexer_check_keywords(Lexer* lexer) {
     return NULL;
 }
 
+Token* lexer_check_identifiers(Lexer* lexer) {
+    const static char allowedChars[] = "_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const static char allowedExtras[] = "0123456789";
+    const static short allowedLength = 31;
+    unsigned int idLength = 0;
+
+    for (int i = 0; i < allowedLength && i + lexer->index < lexer->sourceLength; i++) {
+        unsigned int actualIndex = lexer->index + i;
+        if (strings_contains_char(lexer->source[actualIndex], allowedChars, strlen(allowedChars))) {
+            idLength++;
+            continue;
+        }
+
+        if (i != 0) {
+            if (strings_contains_char(lexer->source[actualIndex], allowedExtras, strlen(allowedExtras))) {
+                idLength++;
+                continue;
+            }
+        }
+
+        // Only gets here if char is none of the allowed
+        break;
+    }
+
+    if (!idLength) {
+        return NULL;
+    } else if (idLength > 31) {
+        printf("ERROR: identifier length longer than 31");
+        return NULL;
+    } else {
+        char* value = malloc((idLength + 1) * sizeof(char));
+        memcpy(value, &lexer->source[lexer->index], idLength);
+        value[idLength] = '\0';
+        Token* token = lexer_create_token(value, TOKEN_IDENTIFIER);
+        free(value);
+
+        lexer->index += idLength;
+
+        return token;
+    }
+}
+
 Token* lexer_interpret(Lexer* lexer) {
-    Token* token;
+    Token* token = NULL;
 
     token = lexer_check_keywords(lexer);
+    if (token != NULL) return token;
 
-    return token;
+    token = lexer_check_identifiers(lexer);
+    if (token != NULL) return token;
+
+    return NULL;
 }
 
 void lexer_delete(Lexer* lexer) {

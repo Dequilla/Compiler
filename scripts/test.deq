@@ -2,6 +2,18 @@ scope io {
     fn print(string str) {
         
     }
+
+    scope file {
+    
+        type File {
+            
+        }
+
+        fn open(string path) returns File {
+            return aFile
+        }
+
+    }
 }
 
 type Animal {

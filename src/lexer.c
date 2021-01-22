@@ -45,6 +45,8 @@ Token* lexer_check_keywords(Lexer* lexer) {
         "int32",
         "int64",
         "string",
+        "returns",
+        "return",
         "{",
         "}",
         "(",
@@ -70,7 +72,7 @@ Token* lexer_check_keywords(Lexer* lexer) {
 
         if (isSame) {
             Token* token = lexer_create_token(keywords[i], TOKEN_KEYWORD);
-            lexer->index += keysize;
+            lexer->index += keysize - 1;
             return token;
         }
     }
@@ -114,13 +116,20 @@ Token* lexer_check_identifiers(Lexer* lexer) {
         Token* token = lexer_create_token(value, TOKEN_IDENTIFIER);
         free(value);
 
-        lexer->index += idLength;
+        lexer->index += idLength - 1;
 
         return token;
     }
 }
 
 Token* lexer_interpret(Lexer* lexer) {
+    char c = lexer->source[lexer->index];
+    if (
+        c == ' ' || c == '\t' || 
+        c == '\n' || c == '\v' || 
+        c == '\r' || c == '\f'
+    ) return NULL;
+
     Token* token = NULL;
 
     token = lexer_check_keywords(lexer);
@@ -128,6 +137,10 @@ Token* lexer_interpret(Lexer* lexer) {
 
     token = lexer_check_identifiers(lexer);
     if (token != NULL) return token;
+
+    // identify RValues examples:
+    // string str = "string inside this"
+    // int8 num = 029472
 
     return NULL;
 }

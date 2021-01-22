@@ -9,10 +9,11 @@ int main(int argc, char** argv) {
     RFile* file = file_read_open("../scripts/test.deq");
     if (file == NULL) return -1;
 
-    printf(" -- File content -- \n%s\n\n -- Tokens -- \n", file->buffer);
+    printf(" -- File content -- \n%s\n\n", file->buffer);
 
     Lexer* lexer = lexer_create(file->buffer);
     
+    printf(" -- Tokens -- \n");
     while (lexer_advance(lexer)) {
         Token* token = lexer_interpret(lexer);
 

@@ -1,6 +1,7 @@
 #include "lexer.h"
 
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 
 #include "strings.h"
@@ -24,7 +25,7 @@ void lexer_delete_token(Token* token) {
 Lexer* lexer_create(char* source) {
     Lexer* lexer = calloc(1, sizeof(Lexer));
     
-    lexer->source = source; // TODO: Remember to deallocate source
+    lexer->source = source;
     lexer->sourceLength = strlen(lexer->source);
     lexer->index = -1;
 
@@ -119,6 +120,17 @@ Token* lexer_check_identifiers(Lexer* lexer) {
         lexer->index += idLength - 1;
 
         return token;
+    }
+}
+
+Token* lexer_check_values(Lexer* lexer) {
+    const static char* numbers = "0123456789";
+    if (lexer->source[lexer->index] == '\'') {
+        // string
+        // strings_find_next_of() ?
+    } else if (strings_contains_char(lexer->source[lexer->index], numbers, strlen(numbers))) {
+        // number
+        // for until not in numbers
     }
 }
 

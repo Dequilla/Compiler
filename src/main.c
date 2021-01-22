@@ -6,6 +6,7 @@ int main(int argc, char** argv) {
     char* cwd = file_get_cwd();
     printf("Current dir: %s\n", cwd);
 
+    // Keep alive until lexer is done
     RFile* file = file_read_open("../scripts/test.deq");
     if (file == NULL) return -1;
 

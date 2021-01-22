@@ -38,6 +38,8 @@ Token* lexer_check_keywords(Lexer* lexer);
 
 Token* lexer_check_identifiers(Lexer* lexer);
 
+Token* lexer_check_values(Lexer* lexer);
+
 Token* lexer_interpret(Lexer* lexer);
 
 void lexer_delete(Lexer* lexer);

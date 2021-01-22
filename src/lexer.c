@@ -125,13 +125,29 @@ Token* lexer_check_identifiers(Lexer* lexer) {
 
 Token* lexer_check_values(Lexer* lexer) {
     const static char* numbers = "0123456789";
+    
     if (lexer->source[lexer->index] == '\"') {
-        // string
-        // strings_find_next_of() ?
+        int length = 0;
+        for (int i = 1; i + lexer->index < lexer->sourceLength; i++) {
+            if (lexer->source[i + lexer->index] == '\"') break;
+            else length++;
+        }
+        
+        char* value = malloc((length + 1) * sizeof(char));
+        memcpy(value, &lexer->source[lexer->index + 1], length);
+        value[length] = '\0';
+        Token* token = lexer_create_token(value, TOKEN_STRLITERAL);
+        free(value);
+
+        lexer->index += 1 + length + 1; // " before and after
+        return token;
     } else if (strings_contains_char(lexer->source[lexer->index], numbers, strlen(numbers))) {
         // number
         // for until not in numbers
+        return NULL;
     }
+
+    return NULL;
 }
 
 Token* lexer_interpret(Lexer* lexer) {
@@ -150,9 +166,8 @@ Token* lexer_interpret(Lexer* lexer) {
     token = lexer_check_identifiers(lexer);
     if (token != NULL) return token;
 
-    // identify RValues examples:
-    // string str = "string inside this"
-    // int8 num = 029472
+    token = lexer_check_values(lexer);
+    if (token != NULL) return token;
 
     return NULL;
 }

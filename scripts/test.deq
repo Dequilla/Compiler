@@ -22,5 +22,6 @@ type Animal {
 }
 
 int8 test = 100
+string name = "testing"
 
 io.print(test)

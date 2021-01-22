@@ -125,7 +125,7 @@ Token* lexer_check_identifiers(Lexer* lexer) {
 
 Token* lexer_check_values(Lexer* lexer) {
     const static char* numbers = "0123456789";
-    if (lexer->source[lexer->index] == '\'') {
+    if (lexer->source[lexer->index] == '\"') {
         // string
         // strings_find_next_of() ?
     } else if (strings_contains_char(lexer->source[lexer->index], numbers, strlen(numbers))) {

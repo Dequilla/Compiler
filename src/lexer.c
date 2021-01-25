@@ -127,10 +127,13 @@ Token* lexer_check_values(Lexer* lexer) {
     const static char* numbers = "0123456789";
     
     if (lexer->source[lexer->index] == '\"') {
+        // Checka efter textsträng
         int length = 0;
         for (int i = 1; i + lexer->index < lexer->sourceLength; i++) {
-            if (lexer->source[i + lexer->index] == '\"') break;
-            else length++;
+            if (lexer->source[i + lexer->index] == '\"') 
+                break;
+            else 
+                length++;
         }
         
         char* value = malloc((length + 1) * sizeof(char));
@@ -142,11 +145,35 @@ Token* lexer_check_values(Lexer* lexer) {
         lexer->index += 1 + length + 1; // " before and after
         return token;
     } else if (strings_contains_char(lexer->source[lexer->index], numbers, strlen(numbers))) {
-        // number
-        // for until not in numbers
-        return NULL;
+        // Checka efter nummer
+        int length = 0;
+        short dotCount = 0;
+        for (int i = 0; i + lexer->index < lexer->sourceLength; i++) {
+            if (strings_contains_char(lexer->source[i + lexer->index], numbers, strlen(numbers))) {
+                length++;
+            } else if (lexer->source[i + lexer->index] == '.') {
+                dotCount++;
+                if (dotCount > 1) {
+                    printf("ERROR: number contained more than one dot");
+                    return NULL;
+                }
+                length++;
+            } else {
+                break;
+            }
+        }
+
+        char* value = malloc((length + 1) * sizeof(char));
+        memcpy(value, &lexer->source[lexer->index], length);
+        value[length] = '\0';
+        Token* token = lexer_create_token(value, TOKEN_NUMLITERAL);
+        free(value);
+
+        lexer->index += length;
+        return token;
     }
 
+    // If neither a string or number
     return NULL;
 }
 

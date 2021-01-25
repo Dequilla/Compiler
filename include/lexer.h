@@ -2,17 +2,10 @@
 #define LEXER_H
 
 typedef enum {
-    TOKEN_SCOPE,
     TOKEN_IDENTIFIER,
     TOKEN_KEYWORD,
-    TOKEN_TYPE,
-    TOKEN_EQ,
     TOKEN_STRLITERAL,
-    TOKEN_NUMLITERAL,
-    TOKEN_LBRACE,
-    TOKEN_RBRACE,
-    TOKEN_LPAREN,
-    TOKEN_RPAREN
+    TOKEN_NUMLITERAL
 } TokenTypes;
 
 typedef struct {

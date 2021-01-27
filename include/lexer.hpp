@@ -10,6 +10,8 @@ namespace deq {
 			KEYWORD,
 			PARAN,
 			BRACE,
+			DOT,
+			ASSIGN,
 			FUNC,
 			EXPRESSION,
 			IDENTIFIER,
@@ -22,13 +24,17 @@ namespace deq {
 		Type type;
 		std::string value;
 
-		Token(Type type = Token::UNKNOWN, std::string value = "");
+		unsigned long position; 
+
+		Token(Type type = Token::UNKNOWN, std::string value = "", unsigned long position = 0);
 	};
 
 	class Lexer {
 		std::string m_source;
 
 		Token checkKeywords(unsigned long& index);
+		Token checkDividers(unsigned long& index);
+		Token checkIdentifiers(unsigned long& index);
 
 	public:
 		Lexer(std::string source);

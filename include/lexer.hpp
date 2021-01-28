@@ -9,10 +9,12 @@ namespace deq {
 
 			KEYWORD,
 			PARAN,
-			BRACE,
+			CURL_BRACE,
+			SQ_BRACE,
 			DOT,
 			ASSIGN,
 			FUNC,
+			EQ,
 			EXPRESSION,
 			IDENTIFIER,
 			STR_LITERAL,
@@ -35,6 +37,7 @@ namespace deq {
 		Token checkKeywords(unsigned long& index);
 		Token checkDividers(unsigned long& index);
 		Token checkIdentifiers(unsigned long& index);
+		Token checkStringLiterals(unsigned long& index);
 
 	public:
 		Lexer(std::string source);

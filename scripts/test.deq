@@ -19,6 +19,7 @@ scope io {
 type Animal {
     string name
     int8 age
+    byte binary = [10]
 }
 
 int8 test = 100

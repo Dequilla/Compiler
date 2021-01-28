@@ -17,7 +17,26 @@ deq::Token deq::Lexer::checkKeywords(unsigned long& index) {
 		"scope",
 		"type",
 		"returns",
-		"return"
+		"return",
+		"const",
+		"ref",
+
+		"bool",
+
+		"byte",
+		"int8",
+		"int16",
+		"int32",
+		"int64",
+		"uint8",
+		"uint16",
+		"uint32",
+		"uint64",
+
+		"string",
+		
+		"float",
+		"double"
 	};
 
 	for (auto& keyword : keywords) {
@@ -49,13 +68,13 @@ deq::Token deq::Lexer::checkDividers(unsigned long& index) {
 	{
 	case '{':
 		return Token(
-			Token::BRACE,
+			Token::CURL_BRACE,
 			"{",
 			index
 		);
 	case '}':
 		return Token(
-			Token::BRACE,
+			Token::CURL_BRACE,
 			"}",
 			index
 		);
@@ -73,6 +92,19 @@ deq::Token deq::Lexer::checkDividers(unsigned long& index) {
 			index
 		);
 
+	case '[':
+		return Token(
+			Token::SQ_BRACE,
+			"[",
+			index
+		);
+	case ']':
+		return Token(
+			Token::SQ_BRACE,
+			"]",
+			index
+		);
+
 	case '.':
 		return Token(
 			Token::DOT,
@@ -81,9 +113,15 @@ deq::Token deq::Lexer::checkDividers(unsigned long& index) {
 		);
 
 	case '=':
-		if (this->m_source.size() > index + 1 && this->m_source.at(index + 1) == '=') return Token();
+		if (this->m_source.size() > index + 1 && this->m_source.at(index + 1) == '=') {
+			index += 1;
+			return Token(
+				Token::EQ,
+				"==",
+				index - 1
+			);
+		}
 
-		index += 1;
 		return Token(
 			Token::ASSIGN,
 			"=",
@@ -125,6 +163,27 @@ deq::Token deq::Lexer::checkIdentifiers(unsigned long& index) {
 	}
 }
 
+deq::Token deq::Lexer::checkStringLiterals(unsigned long& index) {
+	if (m_source[index] != '"') return Token();
+	auto second = this->m_source.find_first_of('"', index + 1);
+
+	if (
+		second != m_source.npos && 
+		second > index
+	) {
+		auto substring = m_source.substr(index + 1, second - index - 1);
+		Token token = Token(
+			Token::STR_LITERAL,
+			substring,
+			index + 1
+		);
+		index += substring.length();
+		return token;
+	}
+
+	return Token();
+}
+
 
 deq::Token deq::Lexer::interpret(unsigned long& index) {
 	const char c = m_source[index];
@@ -141,8 +200,12 @@ deq::Token deq::Lexer::interpret(unsigned long& index) {
 	if (token.type != Token::UNKNOWN) {
 		return token;
 	}
-
+	
 	token = checkIdentifiers(index);
+	if (token.type != Token::UNKNOWN) {
+		return token;
+	}
+	token = checkStringLiterals(index);
 	if (token.type != Token::UNKNOWN) {
 		return token;
 	}

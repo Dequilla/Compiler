@@ -5,7 +5,7 @@
 #include "lexer.hpp"
 
 int main(int argc, char** argv) {
-	std::ifstream file("../scripts/test.deq", std::ios::in);
+	std::ifstream file("../scripts/simple.deq", std::ios::in);
 	if (!file.is_open() || !file.good()) return -1;
 	std::stringstream ss;
 	ss << file.rdbuf();

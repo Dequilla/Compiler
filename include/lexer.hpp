@@ -38,6 +38,7 @@ namespace deq {
 		Token checkDividers(unsigned long& index);
 		Token checkIdentifiers(unsigned long& index);
 		Token checkStringLiterals(unsigned long& index);
+		Token checkNumberLiterals(unsigned long& index);
 
 	public:
 		Lexer(std::string source);

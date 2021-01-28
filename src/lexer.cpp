@@ -184,6 +184,32 @@ deq::Token deq::Lexer::checkStringLiterals(unsigned long& index) {
 	return Token();
 }
 
+deq::Token deq::Lexer::checkNumberLiterals(unsigned long& index) {
+	unsigned int numLength = 0;
+	for (unsigned int i = 0; i + index < m_source.length(); i++) {
+		if(std::string("0123456789").find(m_source[index + i]) != m_source.npos) {
+			numLength += 1;
+		}
+		else if (i > 0 && m_source[index + i] == '.') {
+			numLength += 1;
+		}
+		else {
+			break;
+		}
+	}
+
+	if (numLength > 0) {
+		Token token = Token(
+			Token::NUM_LITERAL,
+			m_source.substr(index, numLength),
+			index
+		);
+		index += numLength;
+		return token;
+	}
+
+	return Token();
+}
 
 deq::Token deq::Lexer::interpret(unsigned long& index) {
 	const char c = m_source[index];
@@ -205,7 +231,13 @@ deq::Token deq::Lexer::interpret(unsigned long& index) {
 	if (token.type != Token::UNKNOWN) {
 		return token;
 	}
+
 	token = checkStringLiterals(index);
+	if (token.type != Token::UNKNOWN) {
+		return token;
+	}
+
+	token = checkNumberLiterals(index);
 	if (token.type != Token::UNKNOWN) {
 		return token;
 	}

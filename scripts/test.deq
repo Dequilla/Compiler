@@ -23,6 +23,7 @@ type Animal {
 }
 
 int8 test = 100
+float test2 = 13.37
 string name = "testing"
 
 io.print(test)

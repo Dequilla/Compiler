@@ -14,8 +14,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 project(${PROJECT_NAME} VERSION 1.0)
 add_executable(${PROJECT_NAME} 
     "src/main.cpp"
-     
-     "include/lexer.hpp" "src/lexer.cpp" "include/ast.hpp" "src/ast.cpp")
+    "include/lexer.hpp" "src/lexer.cpp" "include/ast.hpp" "src/ast.cpp" "include/typing.hpp" "src/typing.cpp")
 target_include_directories(${PROJECT_NAME} PUBLIC ${INC_DIR})
 
 # Make it output to a standard location

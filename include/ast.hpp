@@ -2,32 +2,21 @@
 #include <string>
 #include <memory>
 #include <utility>
+#include <vector>
+#include <type_traits>
+#include <iostream>
+
+#include "typing.hpp"
+#include "lexer.hpp"
 
 namespace deq {
 	namespace ast {
-		enum VarType {
-			INT8,
-			INT16,
-			INT32,
-			INT64,
-
-			UINT8,
-			UINT16,
-			UINT32,
-			UINT64,
-
-			BYTE,
-			STRING,
-
-			FLOAT,
-			DOUBLE,
-
-			BOOL
-		};
-
 		struct Node {
 			enum Type {
+				UNKNOWN,
+
 				DECL_VAR,
+				STATEMENTS,
 
 				OP_EXPR,
 				LIT_EXPR,
@@ -36,7 +25,19 @@ namespace deq {
 
 			Type type;
 
-			Node(Type type) : type(type) {};
+			Node(Type type = Type::UNKNOWN) : type(type) {};
+		};
+
+		struct StatementsNode : public Node {
+			std::vector<std::unique_ptr<Node>> statements;
+
+			StatementsNode(std::vector<std::unique_ptr<Node>>& stmts = std::vector<std::unique_ptr<Node>>())
+				:	Node(Node::STATEMENTS)
+			{
+				for (auto& node : stmts) {
+					statements.push_back(std::move(node));
+				}
+			}
 		};
 
 		struct ExpressionNode : public Node {
@@ -77,14 +78,28 @@ namespace deq {
 		};
 
 		struct VarDeclareNode : public Node {
-			VarType varType;
+			typing::Type varType;
 			std::string name;
 
-			VarDeclareNode(VarType varType, std::string name)
+			VarDeclareNode(typing::Type varType, std::string name)
 				:	Node(Node::DECL_VAR),
 					varType(varType),
 					name(name)
 				{};
+		};
+
+		class AstBuilder {
+			std::vector<deq::Token> m_tokens;
+
+			std::unique_ptr<Node> checkVarDeclare(unsigned long& index);
+			std::unique_ptr<Node> checkAssignExpression(unsigned long& index);
+
+		public:
+			AstBuilder(std::vector<deq::Token> tokens);
+
+			std::unique_ptr<Node> interpret(unsigned long& index);
+
+			StatementsNode run();
 		};
 	}
 }

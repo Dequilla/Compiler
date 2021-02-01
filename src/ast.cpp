@@ -1,57 +1,12 @@
 #include "ast.hpp"
 
-deq::ast::Node::Node(deq::ast::Node::Type type) 
-	: type(type) {};
-
-deq::ast::StatementsNode::StatementsNode(std::vector<Node*>& stmts)
-	: Node(Node::STATEMENTS)
-{
-	for (auto& node : stmts) {
-		statements.push_back(node);
-	}
+deq::ast::AstTree::AstTree() {
+	m_root = std::make_shared<StatementsNode>();
 }
 
-deq::ast::StatementsNode::~StatementsNode() {
-	for (auto& node : statements) {
-		delete node;
-	}
+std::shared_ptr<deq::ast::StatementsNode> deq::ast::AstTree::getRoot() {
+	return m_root;
 }
-
-deq::ast::ExpressionNode::ExpressionNode(Node::Type type) 
-	: Node(type) {};
-
-deq::ast::OperatorNode::OperatorNode(ExpressionNode* left, ExpressionNode* right, std::string op)
-	: ExpressionNode(Node::OP_EXPR),
-	left(left),
-	right(right),
-	op(op)
-{};
-
-deq::ast::OperatorNode::~OperatorNode() {
-	delete left;
-	delete right;
-}
-
-deq::ast::LiteralNode::LiteralNode(std::string value)
-	: ExpressionNode(Node::LIT_EXPR),
-	value(value)
-{};
-
-deq::ast::AssignNode::AssignNode(std::string name, ExpressionNode* value)
-	: ExpressionNode(Node::ASS_EXPR),
-	name(name),
-	value(value)
-{};
-
-deq::ast::AssignNode::~AssignNode() {
-	delete value;
-}
-
-deq::ast::VarDeclareNode::VarDeclareNode(typing::Type varType, std::string name)
-	: Node(Node::DECL_VAR),
-	varType(varType),
-	name(name)
-{};
 
 deq::ast::Node* deq::ast::AstBuilder::checkVarDeclare(unsigned long& index) {
 	if(index + 1 >= m_tokens.size()) return nullptr;
@@ -85,7 +40,7 @@ deq::ast::Node* deq::ast::AstBuilder::checkAssignExpression(unsigned long& index
 			m_tokens[index + 1].type == Token::IDENTIFIER
 		)
 	) {
-		unsigned long i = index + 1; // Nästa token måste identifieras
+		unsigned long i = index + 1;
 		Node* expr = interpret(i);
 		if (expr == nullptr) expr = new LiteralNode("NULL");
 
@@ -144,14 +99,14 @@ deq::ast::Node* deq::ast::AstBuilder::interpret(unsigned long& index) {
 	return nullptr;
 }
 
-deq::ast::StatementsNode* deq::ast::AstBuilder::build() {
-	StatementsNode* root = new StatementsNode();
+deq::ast::AstTree deq::ast::AstBuilder::build() {
+	AstTree tree;
 	
 	for (unsigned long index = 0; index < m_tokens.size(); index++) {
 		Node* statement = interpret(index);
 		if (statement != nullptr) 
-			root->statements.push_back(statement);
+			tree.getRoot()->statements.push_back(statement);
 	}
 
-	return root;
+	return tree;
 }

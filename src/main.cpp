@@ -16,7 +16,7 @@ int main(int argc, char** argv) {
 	auto tokens = lexer.run();
 
 	deq::ast::AstBuilder builder(tokens);
-	deq::ast::AstTree tree = builder.build();
+	auto tree = builder.build();
 
 	return 0;
 }

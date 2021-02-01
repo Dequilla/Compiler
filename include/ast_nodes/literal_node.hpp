@@ -5,11 +5,11 @@
 
 namespace deq {
 	namespace ast {
-		struct LiteralNode : public ExpressionNode {
+		struct Literal : public Expression {
 			std::string value;
 
-			LiteralNode(std::string value)
-				: ExpressionNode(Node::LIT_EXPR),
+			Literal(std::string value)
+				: Expression(Node::LIT_EXPR),
 				value(value)
 			{};
 		};

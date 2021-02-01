@@ -1,11 +1,11 @@
 #include "ast_nodes/assign_node.hpp"
 
-deq::ast::AssignNode::AssignNode(std::string name, ExpressionNode* value)
-	: ExpressionNode(Node::ASS_EXPR),
+deq::ast::VariableAssignment::VariableAssignment(std::string name, Expression* value)
+	: Expression(Node::ASS_EXPR),
 	name(name),
 	value(value)
 {};
 
-deq::ast::AssignNode::~AssignNode() {
+deq::ast::VariableAssignment::~VariableAssignment() {
 	delete value;
 }

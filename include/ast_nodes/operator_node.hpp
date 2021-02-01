@@ -5,13 +5,13 @@
 
 namespace deq {
 	namespace ast {
-		struct OperatorNode : public ExpressionNode {
+		struct Operator : public Expression {
 			std::string op;
-			ExpressionNode* left;
-			ExpressionNode* right;
+			Expression* left;
+			Expression* right;
 
-			OperatorNode(ExpressionNode* left, ExpressionNode* right, std::string op);
-			~OperatorNode();
+			Operator(Expression* left, Expression* right, std::string op);
+			~Operator();
 		};
 	}
 }

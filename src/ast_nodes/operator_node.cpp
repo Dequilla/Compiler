@@ -1,13 +1,13 @@
 #include "ast_nodes/operator_node.hpp"
 
-deq::ast::OperatorNode::OperatorNode(ExpressionNode* left, ExpressionNode* right, std::string op)
-	: ExpressionNode(Node::OP_EXPR),
+deq::ast::Operator::Operator(Expression* left, Expression* right, std::string op)
+	: Expression(Node::OP_EXPR),
 	left(left),
 	right(right),
 	op(op)
 {};
 
-deq::ast::OperatorNode::~OperatorNode() {
+deq::ast::Operator::~Operator() {
 	delete left;
 	delete right;
 }

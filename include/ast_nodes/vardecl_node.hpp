@@ -6,11 +6,11 @@
 
 namespace deq {
 	namespace ast {
-		struct VarDeclareNode : public Node {
+		struct VariableDeclaration : public Node {
 			typing::Type varType;
 			std::string name;
 
-			VarDeclareNode(typing::Type varType, std::string name);
+			VariableDeclaration(typing::Type varType, std::string name);
 		};
 	}
 }

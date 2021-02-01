@@ -22,12 +22,12 @@ namespace deq {
 	namespace ast {
 		class AstTree {
 		protected:
-			std::shared_ptr<StatementsNode> m_root;
+			std::shared_ptr<Statements> m_root;
 
 			AstTree();
 
 		public:
-			std::shared_ptr<StatementsNode> getRoot();
+			std::shared_ptr<Statements> getRoot();
 
 			friend class AstBuilder;
 		};

@@ -3,8 +3,8 @@
 
 namespace deq {
 	namespace ast {
-		struct ExpressionNode : public Node {
-			ExpressionNode(Node::Type type) : Node(type) {};
+		struct Expression : public Node {
+			Expression(Node::Type type) : Node(type) {};
 		};
 	}
 }

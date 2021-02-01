@@ -6,10 +6,10 @@
 namespace deq {
 	namespace ast {
 		
-		struct StatementsNode : public Node {
+		struct Statements : public Node {
 			std::vector<Node*> statements;
 
-			StatementsNode(std::vector<Node*>& stmts = std::vector<Node*>())
+			Statements(std::vector<Node*>& stmts = std::vector<Node*>())
 				: Node(Node::STATEMENTS)
 			{
 				for (auto& node : stmts) {
@@ -17,7 +17,7 @@ namespace deq {
 				}
 			};
 
-			~StatementsNode() {
+			~Statements() {
 				for (auto& node : statements) {
 					delete node;
 				}

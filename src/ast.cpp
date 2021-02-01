@@ -1,10 +1,10 @@
 #include "ast.hpp"
 
 deq::ast::AstTree::AstTree() {
-	m_root = std::make_shared<StatementsNode>();
+	m_root = std::make_shared<Statements>();
 }
 
-std::shared_ptr<deq::ast::StatementsNode> deq::ast::AstTree::getRoot() {
+std::shared_ptr<deq::ast::Statements> deq::ast::AstTree::getRoot() {
 	return m_root;
 }
 
@@ -17,7 +17,7 @@ deq::ast::Node* deq::ast::AstBuilder::checkVarDeclare(unsigned long& index) {
 		m_tokens[index + 1].type == Token::IDENTIFIER
 	) {
 		index += 1;
-		return new VarDeclareNode(
+		return new VariableDeclaration(
 			typing::fromString(m_tokens[index - 1].value), m_tokens[index].value
 		);
 	}
@@ -42,14 +42,14 @@ deq::ast::Node* deq::ast::AstBuilder::checkAssignExpression(unsigned long& index
 	) {
 		unsigned long i = index + 1;
 		Node* expr = interpret(i);
-		if (expr == nullptr) expr = new LiteralNode("NULL");
+		if (expr == nullptr) expr = new Literal("NULL");
 
 		unsigned long offset = i - index;
 		index += offset - 1;
 
-		return new AssignNode(
+		return new VariableAssignment(
 			m_tokens[index - offset].value,
-			static_cast<ExpressionNode*>(expr)
+			static_cast<Expression*>(expr)
 		);
 	}
 

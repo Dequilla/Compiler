@@ -6,7 +6,7 @@
 #include "ast.hpp"
 
 int main(int argc, char** argv) {
-	std::ifstream file("../scripts/simple.deq", std::ios::in);
+	std::ifstream file("../scripts/assignment.deq", std::ios::in);
 	if (!file.is_open() || !file.good()) return -1;
 	std::stringstream ss;
 	ss << file.rdbuf();

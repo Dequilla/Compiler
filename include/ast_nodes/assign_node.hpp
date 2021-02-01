@@ -5,12 +5,12 @@
 
 namespace deq {
 	namespace ast {
-		struct AssignNode : public ExpressionNode {
+		struct VariableAssignment : public Expression {
 			std::string name;
-			ExpressionNode* value;
+			Expression* value;
 
-			AssignNode(std::string name, ExpressionNode* value);
-			~AssignNode();
+			VariableAssignment(std::string name, Expression* value);
+			~VariableAssignment();
 		};
 	}
 }

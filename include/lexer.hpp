@@ -8,13 +8,19 @@ namespace deq {
 			UNKNOWN,
 
 			KEYWORD,
-			PARAN,
-			CURL_BRACE,
-			SQ_BRACE,
+			
+			LPARAN,
+			RPARAN,
+			LCURL_BRACE,
+			RCURL_BRACE,
+			LSQ_BRACE,
+			RSQ_BRACE,
+			
 			DOT,
+
 			ASSIGN,
-			FUNC,
 			OPERATOR,
+			
 			IDENTIFIER,
 			STR_LITERAL,
 			NUM_LITERAL,

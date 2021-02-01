@@ -68,39 +68,39 @@ deq::Token deq::Lexer::checkDividers(unsigned long& index) {
 	{
 	case '{':
 		return Token(
-			Token::CURL_BRACE,
+			Token::LCURL_BRACE,
 			"{",
 			index
 		);
 	case '}':
 		return Token(
-			Token::CURL_BRACE,
+			Token::RCURL_BRACE,
 			"}",
 			index
 		);
 
 	case '(':
 		return Token(
-			Token::PARAN,
+			Token::LPARAN,
 			"(",
 			index
 		);
 	case ')':
 		return Token(
-			Token::PARAN,
+			Token::RPARAN,
 			")",
 			index
 		);
 
 	case '[':
 		return Token(
-			Token::SQ_BRACE,
+			Token::LSQ_BRACE,
 			"[",
 			index
 		);
 	case ']':
 		return Token(
-			Token::SQ_BRACE,
+			Token::RSQ_BRACE,
 			"]",
 			index
 		);

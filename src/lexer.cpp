@@ -116,18 +116,31 @@ deq::Token deq::Lexer::checkDividers(unsigned long& index) {
 		if (this->m_source.size() > index + 1 && this->m_source.at(index + 1) == '=') {
 			index += 1;
 			return Token(
-				Token::EQ,
+				Token::OPERATOR,
 				"==",
 				index - 1
 			);
 		}
+		else if (index < m_source.size() && m_source[index] == '=') {
+			return Token(
+				Token::ASSIGN,
+				"=",
+				index - 1
+			);
+		}
+
+	case '+':
+	case '*':
+	case '/':
+	case '-':
+		if (index >= m_source.size()) return Token();
 
 		return Token(
-			Token::ASSIGN,
-			"=",
+			Token::OPERATOR,
+			std::string(1, m_source[index]),
 			index
 		);
-		
+
 	default: 
 		return Token();
 	}

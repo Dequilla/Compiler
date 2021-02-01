@@ -16,7 +16,8 @@ int main(int argc, char** argv) {
 	auto tokens = lexer.run();
 
 	deq::ast::AstBuilder builder(tokens);
-	auto ast = builder.run();
+	auto ast = builder.build();
+	delete ast;
 
 	return 0;
 }
